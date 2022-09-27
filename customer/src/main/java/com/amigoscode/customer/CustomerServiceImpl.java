@@ -1,18 +1,35 @@
 package com.amigoscode.customer;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @Service
-public record CustomerServiceImpl(CustomerRepository repository) implements CustomerService {
+@AllArgsConstructor
+public class CustomerServiceImpl implements CustomerService {
+
+    private final CustomerRepository repository;
+    private final RestTemplate restTemplate;
+
     @Override
-    public Customer create(Customer customer) {
+    public Customer create(Customer customerRequest) {
 
         // TODO check if email valid
         // TODO check if email not taken
 
-        return repository.save(customer);
+        Customer customer = repository.saveAndFlush(customerRequest);
+        FraudResponse fraudResponse = restTemplate.getForObject("http://localhost:8081/api/v1/fraud/{customerId}",
+                FraudResponse.class,
+                customer.getId());
+
+        if (fraudResponse != null && fraudResponse.isFraudster()) {
+            throw new IllegalCallerException("Customer is fraudster");
+        }
+
+        return customer;
+        // TODO send notification
     }
 
     @Override
@@ -37,6 +54,6 @@ public record CustomerServiceImpl(CustomerRepository repository) implements Cust
 
     @Override
     public void delete(Integer id) {
-
+        repository.deleteById(id);
     }
 }
