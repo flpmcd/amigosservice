@@ -1,4 +1,4 @@
-package com.amigoscode.fraud;
+package com.amigoscode.clients.fraud.dto;
 
 public record FraudResponse(Boolean isFraudster) {
 }
