@@ -1,5 +1,7 @@
 package com.amigoscode.customer;
 
+import com.amigoscode.clients.fraud.FraudClient;
+import com.amigoscode.clients.fraud.dto.FraudResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,6 +14,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository repository;
     private final RestTemplate restTemplate;
+    private final FraudClient fraudClient;
 
     @Override
     public Customer create(Customer customerRequest) {
@@ -20,9 +23,11 @@ public class CustomerServiceImpl implements CustomerService {
         // TODO check if email not taken
 
         Customer customer = repository.saveAndFlush(customerRequest);
-        FraudResponse fraudResponse = restTemplate.getForObject("http://FRAUD/api/v1/fraud/{customerId}",
-                FraudResponse.class,
-                customer.getId());
+//        FraudResponse fraudResponse = restTemplate.getForObject("http://FRAUD/api/v1/fraud/{customerId}",
+//                FraudResponse.class,
+//                customer.getId());
+
+        FraudResponse fraudResponse = fraudClient.isFraudster(customer.getId());
 
         if (fraudResponse != null && fraudResponse.isFraudster()) {
             throw new IllegalCallerException("Customer is fraudster");
