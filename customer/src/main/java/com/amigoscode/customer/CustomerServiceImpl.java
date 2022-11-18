@@ -20,7 +20,7 @@ public class CustomerServiceImpl implements CustomerService {
         // TODO check if email not taken
 
         Customer customer = repository.saveAndFlush(customerRequest);
-        FraudResponse fraudResponse = restTemplate.getForObject("http://localhost:8081/api/v1/fraud/{customerId}",
+        FraudResponse fraudResponse = restTemplate.getForObject("http://FRAUD/api/v1/fraud/{customerId}",
                 FraudResponse.class,
                 customer.getId());
 

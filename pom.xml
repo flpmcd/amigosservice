@@ -11,6 +11,7 @@
   <modules>
     <module>customer</module>
     <module>fraud</module>
+    <module>eureka-server</module>
   </modules>
 
   <name>amigosservice</name>
@@ -19,8 +20,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-    <spring-boot-maven-plugin-version>2.7.4</spring-boot-maven-plugin-version>
-    <spring-boot-maven-dependencies-version>2.7.4</spring-boot-maven-dependencies-version>
+    <spring-boot-maven-plugin-version>2.5.7</spring-boot-maven-plugin-version>
+    <spring-boot-dependencies-version>2.5.7</spring-boot-dependencies-version>
+    <spring.cloud-version>2020.0.3</spring.cloud-version>
     <postgresql-version>42.5.0</postgresql-version>
   </properties>
 
@@ -28,10 +30,17 @@
     <dependencies>
       <dependency>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter</artifactId>
-        <version>${spring-boot-maven-dependencies-version}</version>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot-dependencies-version}</version>
         <scope>import</scope>
         <type>pom</type>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring.cloud-version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -45,7 +54,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>${spring-boot-maven-dependencies-version}</version>
+      <version>${spring-boot-dependencies-version}</version>
     </dependency>
   </dependencies>
 
