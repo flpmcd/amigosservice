@@ -15,7 +15,7 @@ public record NotificationController(NotificationService service) {
 
     @PostMapping
     public NotificationResponse sendNotification(@RequestBody NotificationRequest request) {
-
+        log.info("Notification request with message: " + request.message());
         Notification notification = service.sendNotification(Notification.builder()
                 .message(request.message())
                 .build());

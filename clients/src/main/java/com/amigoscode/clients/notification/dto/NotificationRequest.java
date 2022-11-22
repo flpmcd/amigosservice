@@ -1,4 +1,4 @@
 package com.amigoscode.clients.notification.dto;
 
-public record NotificationRequest(String message) {
+public record NotificationRequest(int id, String email, String message) {
 }

@@ -1,5 +1,6 @@
 package com.amigoscode.customer;
 
+import com.amigoscode.amqp.RabbitMQMessageProducer;
 import com.amigoscode.clients.fraud.FraudClient;
 import com.amigoscode.clients.fraud.dto.FraudResponse;
 import com.amigoscode.clients.notification.NotificationClient;
@@ -17,7 +18,8 @@ public class CustomerService {
     private final CustomerRepository repository;
     private final RestTemplate restTemplate;
     private final FraudClient fraudClient;
-    private final NotificationClient notificationClient;
+//    private final NotificationClient notificationClient;
+    private final RabbitMQMessageProducer producer;
 
     public Customer create(Customer customerRequest) {
 
@@ -35,8 +37,13 @@ public class CustomerService {
             throw new IllegalCallerException("Customer is fraudster");
         }
 
-        // TODO send notification
-        notificationClient.sendNotification(new NotificationRequest("Customer created!"));
+        NotificationRequest request = new NotificationRequest(
+                customer.getId(),
+                customer.getEmail(),
+                "Hi %s, welcome to amigoscode"
+        );
+//        notificationClient.sendNotification(new NotificationRequest("Customer created!"));
+        producer.publish(request, "internal.exchange", "internal.notification.routing-key");
         return customer;
     }
 

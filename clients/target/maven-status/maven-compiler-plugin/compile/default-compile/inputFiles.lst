@@ -1,0 +1,5 @@
+/home/felipe/Code/back/AmigosCode/amigosservice/clients/src/main/java/com/amigoscode/clients/notification/NotificationClient.java
+/home/felipe/Code/back/AmigosCode/amigosservice/clients/src/main/java/com/amigoscode/clients/notification/dto/NotificationRequest.java
+/home/felipe/Code/back/AmigosCode/amigosservice/clients/src/main/java/com/amigoscode/clients/fraud/dto/FraudResponse.java
+/home/felipe/Code/back/AmigosCode/amigosservice/clients/src/main/java/com/amigoscode/clients/fraud/FraudClient.java
+/home/felipe/Code/back/AmigosCode/amigosservice/clients/src/main/java/com/amigoscode/clients/notification/dto/NotificationResponse.java

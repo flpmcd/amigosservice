@@ -1,0 +1,5 @@
+com/amigoscode/clients/fraud/dto/FraudResponse.class
+com/amigoscode/clients/notification/dto/NotificationResponse.class
+com/amigoscode/clients/fraud/FraudClient.class
+com/amigoscode/clients/notification/dto/NotificationRequest.class
+com/amigoscode/clients/notification/NotificationClient.class

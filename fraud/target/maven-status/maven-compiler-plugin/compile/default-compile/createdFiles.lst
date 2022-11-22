@@ -1,3 +1,6 @@
+com/amigoscode/fraud/FraudRepository.class
 com/amigoscode/fraud/FraudApplication.class
+com/amigoscode/fraud/FraudService.class
+com/amigoscode/fraud/FraudController.class
 com/amigoscode/fraud/Fraud.class
 com/amigoscode/fraud/Fraud$FraudBuilder.class
