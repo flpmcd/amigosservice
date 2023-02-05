@@ -8,12 +8,10 @@ services:
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
-    ports:
-      - "5432:5432"
     networks:
       - postgres
-    restart: unless-stopped
-
+    ports:
+      - "5432:5432"
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
@@ -23,24 +21,104 @@ services:
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     volumes:
       - pgadmin:/var/lib/pgadmin
-    ports:
-      - "5050:80"
     networks:
       - postgres
-    restart: unless-stopped
+    ports:
+      - "5050:80"
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
+    networks:
+      - amigoscode
     ports:
       - "9411:9411"
   rabbitmq:
     image: rabbitmq:3.11.8-management
     container_name: rabbitmq
+    networks:
+      - amigoscode
     ports:
       - "5672:5672"
       - "15672:15672"
+#  eureka-server:
+#    image: lfelipemacedo/eureka-server
+#    container_name: eureka-server
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    ports:
+#      - "8761:8761"
+#    networks:
+#      - amigoscode
+#    depends_on:
+#      zipkin:
+#        condition: service_started
+#  gateway:
+#    image: lfelipemacedo/gateway
+#    container_name: gateway
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#    ports:
+#      - "8083:8083"
+#    networks:
+#      - amigoscode
+#    depends_on:
+#      zipkin:
+#        condition: service_started
+#      eureka-server:
+#        condition: service_started
+  customer:
+    image: lfelipemacedo/customer
+    container_name: customer
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8080:8080"
+    networks:
+      - amigoscode
+      - postgres
+    depends_on:
+      zipkin:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      postgres:
+        condition: service_started
+  fraud:
+    image: lfelipemacedo/fraud
+    container_name: fraud
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8081:8081"
+    networks:
+      - amigoscode
+      - postgres
+    depends_on:
+      zipkin:
+        condition: service_started
+      postgres:
+        condition: service_started
+  notification:
+    image: lfelipemacedo/notification
+    container_name: notification
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "8082:8082"
+    networks:
+      - amigoscode
+      - postgres
+    depends_on:
+      zipkin:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      postgres:
+        condition: service_started
 networks:
   postgres:
+    driver: bridge
+  amigoscode:
     driver: bridge
 volumes:
   postgres:
